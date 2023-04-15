@@ -47,10 +47,7 @@ typedef struct {
 
 /* === Public function declarations ============================================================ */
 // Uso const porque no voy a modificar la variable alumno (la estructura alumno es la constante)
-int Serializar(const alumno * alumno_s, char * resultado_a, int bytes_disp) {
-    return 0;
-}
-
+int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp);
 /* === End of documentation ==================================================================== */
 
 #ifdef __cplusplus

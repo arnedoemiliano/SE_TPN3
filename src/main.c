@@ -27,6 +27,7 @@ THE SOFTWARE. SPDX-License-Identifier: MIT
  * =============================================================== */
 
 #include "alumno.h"
+#include "stdio.h"
 
 /* === Macros definitions====================================================================== */
 
@@ -44,6 +45,31 @@ THE SOFTWARE. SPDX-License-Identifier: MIT
 
 /* === Public function implementation========================================================== */
 int main(void) {
+
+    /*    ***Creacion de una variable "alumno"***     */
+    static const alumno alumno_a = {
+        .nombre = "Emiliano",
+        .apellido = "Arnedo",
+        .documento = 38745528,
+    };
+
+    // NOTA: la variable local de main() "alumno_a" está en RAM y como es una constante debería
+    // estar en FLASH para no desperdiciar memoria. nota: Si la variable es global, usando "const"
+    // se almacena la variable en FLASH en la direccion del bloque de constantes.
+    // nota: Si la variable es local, usando "static const" la variable pasa a ser global PRIVADA y
+    // va a FLASH. Si la variable es la estructura alumno, entonces debo inicializar sus campos
+    // porque ya no se podrá modificar.
+
+    char cadena_final[128];
+    int resultado;
+
+    if (Serializar(&alumno_a, cadena_final, sizeof(cadena_final)) >= 0) {
+
+        printf("Alumno: %s\n", cadena_final);
+    } else {
+
+        printf("Error");
+    }
 
     return 0;
 }

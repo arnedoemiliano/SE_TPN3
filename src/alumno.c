@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
 /* === Headers files inclusions =============================================================== */
 
 #include "alumno.h"
+#include "stdio.h"
 
 /* === Macros definitions ====================================================================== */
 
@@ -33,25 +34,61 @@ SPDX-License-Identifier: MIT
 /* === Private variable declarations =========================================================== */
 char resultado[50];
 /* === Private function declarations =========================================================== */
-static int SerializarCampoDeTexto();
+static int SerializarTexto(const char campo, char valor, char cadena_final, int disponibles);
 
-static int SerializarCampoNumerico();
+static int SerializarNumero(const char campo, int valor, char cadena_final, int disponibles);
+
 /* === Public variable definitions ============================================================= */
 
 /* === Private variable definitions ============================================================ */
 
 /* === Private function implementation ========================================================= */
-int SerializarCampoDeTexto(void) {
 
-    return 0;
+int SerializarTexto(const char campo, char valor, char cadena_final, int disponibles) {
+    // en vez de disponibles le envia bytes_disp
+
+    return sprintf(cadena_final, disponibles, "\"%s\":\"%s\",", campo, valor);
 }
 
-int SerializarCampoNumerico(void) {
+int SerializarNumero(const char campo, int valor, char cadena_final, int disponibles) {
 
-    return 0;
+    return sprintf(cadena_final, disponibles, "\"%s\":\"%d\",", campo, valor);
 }
+
 /* === Public function implementation ========================================================== */
+int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp) {
 
+    int disponibles = bytes_disp;
+    int resultado;
+    cadena_final[0] = '{';
+    cadena_final++;
+    disponibles--;
+
+    // Para acceder a los miembros de un puntero que apunta a una estructura se usa "->"
+    // SerializarCampoDeTexto devuelve la cantidad de bytes que escribió y un 0 si hubo error.
+    resultado = SerializarTexto("nombre", alumno_s->nombre, cadena_final, disponibles);
+
+    if (resultado > 0) {
+        disponibles -= resultado;
+        cadena_final += resultado;
+        resultado = SerializarTexto("apellido", alumno_s->apellido, cadena_final, disponibles);
+    }
+    if (resultado > 0) {
+        disponibles -= resultado;
+        cadena_final += resultado;
+        resultado = SerializarNumero("documento", alumno_s->documento, cadena_final, disponibles);
+    }
+    if (resultado > 0) {
+
+        cadena_final += resultado;
+        *(cadena_final - 1) = '}';
+        resultado = bytes_disp - disponibles;
+
+        return resultado;
+    }
+
+    return -1;
+}
 /* === End of documentation ==================================================================== */
 
 /** @} End of module definition for doxygen */

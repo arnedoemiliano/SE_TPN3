@@ -32,11 +32,11 @@ SPDX-License-Identifier: MIT
 /* === Private data type declarations ========================================================== */
 
 /* === Private variable declarations =========================================================== */
-char resultado[50];
+char resultado[128];
 /* === Private function declarations =========================================================== */
-static int SerializarTexto(const char campo, char valor, char cadena_final, int disponibles);
+static int SerializarTexto(const char * campo, const char * valor, char * cadena_final, int disponibles);
 
-static int SerializarNumero(const char campo, int valor, char cadena_final, int disponibles);
+static int SerializarNumero(const char * campo, const int valor, char * cadena_final, int disponibles);
 
 /* === Public variable definitions ============================================================= */
 
@@ -44,15 +44,15 @@ static int SerializarNumero(const char campo, int valor, char cadena_final, int 
 
 /* === Private function implementation ========================================================= */
 
-int SerializarTexto(const char campo, char valor, char cadena_final, int disponibles) {
+int SerializarTexto(const char * campo, const char * valor, char * cadena_final, int disponibles) {
     // en vez de disponibles le envia bytes_disp
 
-    return sprintf(cadena_final, disponibles, "\"%s\":\"%s\",", campo, valor);
+    return snprintf(cadena_final, disponibles, "\"%s\":\"%s\",", campo, valor);
 }
 
-int SerializarNumero(const char campo, int valor, char cadena_final, int disponibles) {
+int SerializarNumero(const char * campo, const int valor, char * cadena_final, int disponibles) {
 
-    return sprintf(cadena_final, disponibles, "\"%s\":\"%d\",", campo, valor);
+    return snprintf(cadena_final, disponibles, "\"%s\":\"%d\",", campo, valor);
 }
 
 /* === Public function implementation ========================================================== */

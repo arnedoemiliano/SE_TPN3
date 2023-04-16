@@ -35,18 +35,36 @@ extern "C" {
 
 /* === Public macros definitions =============================================================== */
 #include <stdint.h>
+
+/**
+ * @brief Define el tamaño de los campos de texto de la estructura
+ *
+ * Este paramatro define el tamaño de los campos de texto "nombre" y "apellido" de la estructura
+ * alumno @ref(alumno) "Estructura alumno"
+ */
+#define FIELD_SIZE 30
 /* === Public data type declarations =========================================================== */
 
+//! Estructura para almacenar los datos de un alumno
 typedef struct {
-    char nombre[30];
-    char apellido[30];
-    uint32_t documento;
+    char nombre[FIELD_SIZE];   //!< Almacena el nombre del alumno
+    char apellido[FIELD_SIZE]; //!< Almacena el apellido del alumno
+    uint32_t documento;        //!< Almacena el documento del alumno
 } alumno;
 
 /* === Public variable declarations ============================================================ */
 
 /* === Public function declarations ============================================================ */
 // Uso const porque no voy a modificar la variable alumno (la estructura alumno es la constante)
+
+/**
+ * @brief Funcion para serializar los datos de un alumno
+ *
+ * @param alumno_s //!<
+ * @param cadena_final
+ * @param bytes_disp
+ * @return int
+ */
 int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp);
 /* === End of documentation ==================================================================== */
 

@@ -60,9 +60,9 @@ typedef struct {
 /**
  * @brief Funcion para serializar los datos de un alumno
  *
- * @param alumno_s //!<
- * @param cadena_final
- * @param bytes_disp
+ * @param alumno_s Estructura constante con los datos del alumno
+ * @param cadena_final Cadena donde se almacena el resultado
+ * @param bytes_disp Cantidad de bytes disponibles
  * @return int
  */
 int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp);

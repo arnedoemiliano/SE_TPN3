@@ -1,5 +1,5 @@
 /************************************************************************************************
-Copyright (c) 2023, Emiliano Arnedo <emiarnedo@gmail.com>
+ Copyright (c) 2023, Emiliano Arnedo <emiarnedo@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -32,11 +32,30 @@ SPDX-License-Identifier: MIT
 /* === Private data type declarations ========================================================== */
 
 /* === Private variable declarations =========================================================== */
-char resultado[128];
-/* === Private function declarations =========================================================== */
-static int SerializarTexto(const char * campo, const char * valor, char * cadena_final, int disponibles);
 
-static int SerializarNumero(const char * campo, const int valor, char * cadena_final, int disponibles);
+/* === Private function declarations =========================================================== */
+/**
+ * @brief Funcion para serializar campo de texto. Es llamada por la funcion Serializar.
+ *
+ * @param campo
+ * @param valor
+ * @param cadena_final
+ * @param disponibles
+ * @return int
+ */
+static int SerializarTexto(const char * campo, const char * valor, char * cadena_final,
+                           int disponibles);
+/**
+ * @brief Funcion para serializar campo numerico. Es llamada por la funcion Serializar.
+ *
+ * @param campo
+ * @param valor
+ * @param cadena_final
+ * @param disponibles
+ * @return int
+ */
+static int SerializarNumero(const char * campo, const int valor, char * cadena_final,
+                            int disponibles);
 
 /* === Public variable definitions ============================================================= */
 
@@ -58,6 +77,7 @@ int SerializarNumero(const char * campo, const int valor, char * cadena_final, i
 /* === Public function implementation ========================================================== */
 int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp) {
 
+    /* @var disponibles Almacena la cantidad de bytes disponibles en la cadenadasdopsakdpo **/
     int disponibles = bytes_disp;
     int resultado;
     cadena_final[0] = '{';

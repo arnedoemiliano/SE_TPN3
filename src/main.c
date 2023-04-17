@@ -60,8 +60,9 @@ int main(void) {
     // va a FLASH. Si la variable es la estructura alumno, entonces debo inicializar sus campos
     // porque ya no se podrá modificar.
 
+    /** @var cadena_final[128] variable donde se almacenará la cadena resultante */
+    // No documenta el main
     char cadena_final[128];
-    int resultado;
 
     if (Serializar(&alumno_a, cadena_final, sizeof(cadena_final)) >= 0) {
 

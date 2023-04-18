@@ -4,6 +4,9 @@ OBJ_DIR = $(OUT_DIR)/obj
 BIN_DIR = $(OUT_DIR)/bin
 SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
+DOXYFILE = Doxyfile
+DOC_DIR = $(OUT_DIR)/doc
+DOXYGEN = doxygen
 
 .DEFAULT_GOAL := all
 
@@ -24,3 +27,7 @@ all: $(OBJ_FILES) $(BIN_DIR)
 
 clean: $(OUT_DIR)
 	rm -r $(OUT_DIR)
+
+doc:
+	@doxygen
+	@open $(DOC_DIR)/html/index.html

@@ -108,13 +108,15 @@ int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp) {
 // Lo visto en clase es creacion DINAMICA de objetos
 
 alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
-// En compilacion el compilador decide cual bloque de codigo se ejecuta
-#if CREACION_OBJETOS == dinamica
+    // En compilacion el compilador decide cual bloque de codigo se ejecuta
     alumno_t resultado; // Puntero a la nueva estructura que devuelvo
+#if CREACION_OBJETOS == dinamica
+
     resultado = malloc(sizeof(struct alumno_s));
     strcpy(resultado->apellido, apellido);
     strcpy(resultado->nombre, nombre);
     resultado->documento = documento;
+
 #else // Creacion estatica de objetos
 
     // Las variables instancias son locales, solo se ven dentro de la funcion. Al ser convertidas
@@ -128,9 +130,10 @@ alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
 
         i++;
         if (i > MAX_OBJ) {
-            return -1;
+            return NULL; // Verificar en el programa principal que el puntero != NULL
         }
     }
+    resultado = &instancias[i];
     strcpy(instancias[i].apellido, apellido);
     strcpy(instancias[i].nombre, nombre);
     instancias[i].documento = documento;

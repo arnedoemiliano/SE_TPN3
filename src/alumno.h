@@ -36,36 +36,19 @@ extern "C" {
 /* === Public macros definitions =============================================================== */
 #include <stdint.h>
 
-/**
- * @brief Define el tamaño de los campos de texto de la estructura
- *
- * Este paramatro define el tamaño de los campos de texto "nombre" y "apellido" de la estructura
- * alumno @ref(alumno) "Estructura alumno"
- */
-#define FIELD_SIZE 30
 /* === Public data type declarations =========================================================== */
-
-//! Estructura para almacenar los datos de un alumno
-typedef struct {
-    char nombre[FIELD_SIZE];   //!< Almacena el nombre del alumno
-    char apellido[FIELD_SIZE]; //!< Almacena el apellido del alumno
-    uint32_t documento;        //!< Almacena el documento del alumno
-} alumno;
+typedef struct alumno_s * alumno_t; // alumno_t es un tipo de variable puntero a alumno_s
 
 /* === Public variable declarations ============================================================ */
 
 /* === Public function declarations ============================================================ */
-// Uso const porque no voy a modificar la variable alumno (la estructura alumno es la constante)
+alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento); // Devuelve un puntero
 
-/**
- * @brief Funcion para serializar los datos de un alumno
- *
- * @param alumno_s Estructura constante con los datos del alumno
- * @param cadena_final Cadena donde se almacena el resultado
- * @param bytes_disp Cantidad de bytes disponibles
- * @return int
- */
-int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp);
+int GetCompleto(alumno_t alumno, char * cadena, int espacio);
+
+uint32_t GetDocumento(alumno_t alumno);
+
+int Serializar(alumno_t alumno, char * cadena, int espacio);
 /* === End of documentation ==================================================================== */
 
 #ifdef __cplusplus

@@ -26,34 +26,27 @@ SPDX-License-Identifier: MIT
 
 #include "alumno.h"
 #include "stdio.h"
+#include "stdbool.h"
 
 /* === Macros definitions ====================================================================== */
+#define FIELD_SIZE       30
+#define CREACION_OBJETOS dinamica // "dinamica" o cualquier otra cosa para creacion estatica
+#define MAX_OBJ          50
 
 /* === Private data type declarations ========================================================== */
-
+struct alumno_s {
+    char apellido[FIELD_SIZE];
+    char nombre[FIELD_SIZE];
+    uint32_t documento;
+    bool ocupado // En creacion estatica para saber los lugares disponibles en memoria
+};
 /* === Private variable declarations =========================================================== */
 
 /* === Private function declarations =========================================================== */
-/**
- * @brief Funcion para serializar campo de texto. Es llamada por la funcion Serializar.
- *
- * @param campo
- * @param valor
- * @param cadena_final
- * @param disponibles
- * @return int
- */
+
 static int SerializarTexto(const char * campo, const char * valor, char * cadena_final,
                            int disponibles);
-/**
- * @brief Funcion para serializar campo numerico. Es llamada por la funcion Serializar.
- *
- * @param campo
- * @param valor
- * @param cadena_final
- * @param disponibles
- * @return int
- */
+
 static int SerializarNumero(const char * campo, const int valor, char * cadena_final,
                             int disponibles);
 
@@ -64,7 +57,6 @@ static int SerializarNumero(const char * campo, const int valor, char * cadena_f
 /* === Private function implementation ========================================================= */
 
 int SerializarTexto(const char * campo, const char * valor, char * cadena_final, int disponibles) {
-    // en vez de disponibles le envia bytes_disp
 
     return snprintf(cadena_final, disponibles, "\"%s\":\"%s\",", campo, valor);
 }
@@ -108,6 +100,53 @@ int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp) {
     }
 
     return -1;
+}
+
+// Creacion ESTATICA: en tiempo de COMPILACION
+// Creacion DINAMICA: en tiempo de EJECUCION
+
+// Lo visto en clase es creacion DINAMICA de objetos
+
+alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
+// En compilacion el compilador decide cual bloque de codigo se ejecuta
+#if CREACION_OBJETOS == dinamica
+    alumno_t resultado; // Puntero a la nueva estructura que devuelvo
+    resultado = malloc(sizeof(struct alumno_s));
+    strcpy(resultado->apellido, apellido);
+    strcpy(resultado->nombre, nombre);
+    resultado->documento = documento;
+#else // Creacion estatica de objetos
+
+    // Las variables instancias son locales, solo se ven dentro de la funcion. Al ser convertidas
+    // en estaticas guardan su valor entre llamadas. Basicamente, solo en la primera llamada se
+    // reserva la memoria y ya no se sobrescriben o borran
+    static struct alumno_s instancias[MAX_OBJ];
+    // AQUI VA UN WHILE EN DONDE SE RECORRA INSTANCIAS PARA VER CUAL HUECO DE ALUMNO SE PUEDE LLENAR
+    // USANDO LA BANDERA "bool ocupado"
+    uint8_t i = 0;
+    while (instancias[i].ocupado == 0) {
+
+        i++;
+        if (i > MAX_OBJ) {
+            return -1;
+        }
+    }
+    strcpy(instancias[i].apellido, apellido);
+    strcpy(instancias[i].nombre, nombre);
+    instancias[i].documento = documento;
+    // Creo que se usa "." en vez de "->" porque la estructura a la que accedo la tengo definida en
+    // la propia funcion (en un arreglo de estructuras). En el caso anterior, no tenia acceso a la
+    // estructura, solamente al puntero de la estructura. Preguntar.
+
+#endif
+
+    return resultado;
+}
+
+int GetCompleto(alumno_t alumno, char * cadena, int espacio) {
+}
+
+uint32_t GetDocumento(alumno_t alumno) {
 }
 /* === End of documentation ==================================================================== */
 

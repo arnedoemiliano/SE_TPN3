@@ -27,7 +27,8 @@ SPDX-License-Identifier: MIT
 #include "alumno.h"
 #include "stdio.h"
 #include "stdbool.h"
-
+#include "stdlib.h"
+#include "string.h"
 /* === Macros definitions ====================================================================== */
 #define FIELD_SIZE       30
 #define CREACION_OBJETOS dinamica // "dinamica" o cualquier otra cosa para creacion estatica
@@ -38,12 +39,13 @@ struct alumno_s {
     char apellido[FIELD_SIZE];
     char nombre[FIELD_SIZE];
     uint32_t documento;
-    bool ocupado // En creacion estatica para saber los lugares disponibles en memoria
+    bool ocupado; // En creacion estatica para saber los lugares disponibles en memoria
 };
 /* === Private variable declarations =========================================================== */
 
 /* === Private function declarations =========================================================== */
 
+// static porque es una funcion interna y su alcance es para este modulo nomás.
 static int SerializarTexto(const char * campo, const char * valor, char * cadena_final,
                            int disponibles);
 
@@ -67,7 +69,7 @@ int SerializarNumero(const char * campo, const int valor, char * cadena_final, i
 }
 
 /* === Public function implementation ========================================================== */
-int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp) {
+int Serializar(alumno_t alumno, char * cadena_final, int bytes_disp) {
 
     /* @var disponibles Almacena la cantidad de bytes disponibles en la cadenadasdopsakdpo **/
     int disponibles = bytes_disp;
@@ -78,17 +80,17 @@ int Serializar(const alumno * alumno_s, char * cadena_final, int bytes_disp) {
 
     // Para acceder a los miembros de un puntero que apunta a una estructura se usa "->"
     // SerializarCampoDeTexto devuelve la cantidad de bytes que escribió y un 0 si hubo error.
-    resultado = SerializarTexto("nombre", alumno_s->nombre, cadena_final, disponibles);
+    resultado = SerializarTexto("nombre", alumno->nombre, cadena_final, disponibles);
 
     if (resultado > 0) {
         disponibles -= resultado;
         cadena_final += resultado;
-        resultado = SerializarTexto("apellido", alumno_s->apellido, cadena_final, disponibles);
+        resultado = SerializarTexto("apellido", alumno->apellido, cadena_final, disponibles);
     }
     if (resultado > 0) {
         disponibles -= resultado;
         cadena_final += resultado;
-        resultado = SerializarNumero("documento", alumno_s->documento, cadena_final, disponibles);
+        resultado = SerializarNumero("documento", alumno->documento, cadena_final, disponibles);
     }
     if (resultado > 0) {
 
@@ -112,10 +114,15 @@ alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
     alumno_t resultado; // Puntero a la nueva estructura que devuelvo
 #if CREACION_OBJETOS == dinamica
 
+    // malloc devuelve NULL en caso de error
     resultado = malloc(sizeof(struct alumno_s));
-    strcpy(resultado->apellido, apellido);
-    strcpy(resultado->nombre, nombre);
-    resultado->documento = documento;
+    if (resultado != NULL) {
+        strcpy(resultado->apellido, apellido);
+        strcpy(resultado->nombre, nombre);
+        resultado->documento = documento;
+    } else {
+        return NULL;
+    }
 
 #else // Creacion estatica de objetos
 
@@ -126,17 +133,29 @@ alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
     // AQUI VA UN WHILE EN DONDE SE RECORRA INSTANCIAS PARA VER CUAL HUECO DE ALUMNO SE PUEDE LLENAR
     // USANDO LA BANDERA "bool ocupado"
     uint8_t i = 0;
-    while (instancias[i].ocupado == 0) {
 
+    /*
+    while (instancias[i].ocupado == 0) {
         i++;
         if (i > MAX_OBJ) {
-            return NULL; // Verificar en el programa principal que el puntero != NULL
+            return NULL; // Creo que el compilador va a lanzar primero el error cuando i>MAX_OBJ
+                         // Porque estaría accediendo a un lugar prohibido de memoria.
         }
     }
-    resultado = &instancias[i];
-    strcpy(instancias[i].apellido, apellido);
-    strcpy(instancias[i].nombre, nombre);
-    instancias[i].documento = documento;
+    */
+
+    for (uint8_t i = 0; i <= MAX_OBJ; i++) {
+        if (instancias[i].ocupado == 0) {
+            resultado = &instancias[i];
+            strcpy(instancias[i].apellido, apellido);
+            strcpy(instancias[i].nombre, nombre);
+            instancias[i].documento = documento;
+            instancias[i].ocupado = true;
+            return resultado;
+        }
+    }
+    return NULL // Todos los espacios estaban ocupados
+
     // Creo que se usa "." en vez de "->" porque la estructura a la que accedo la tengo definida en
     // la propia funcion (en un arreglo de estructuras). En el caso anterior, no tenia acceso a la
     // estructura, solamente al puntero de la estructura. Preguntar.

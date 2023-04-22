@@ -1,16 +1,43 @@
-![banner](https://www.facet.unt.edu.ar/wp-content/uploads/2022/04/FACET-cabecera-2022.png)
+# Laboratorio de Microprocesadores: Trabajo Práctico N°3
 
-# Asignatura: Laboratorio de Microprocesadores
+Serializador de objetos en formato JSON usando el patron de programacion ADT.
 
-## Trabajo Práctico: N°3
-    ![badget_version](https://camo.githubusercontent.com/8733716e2fd7444a0f383a9e5f43779a016bae35ddde4e1cc32a4f90bd9bb775/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f76657273696f6e2d312e322e332d626c7565)
+## Instalación
+
+Usar el programa [make](https://www.gnu.org/software/make/) para compilar y generar en la carpeta <build/bin> el ejecutable 'app.elf'. El comando generará la carpeta build en caso de que no existiera.  
+1. Clonar el repositorio desde GitHub:
+
+    ```bash
+    git clone https://github.com/arnedoemiliano/SE_TPN3.git
+    ```
+2. Acceder a la ubicacion del proyecto:
+     ```bash
+    cd SE_TPN3
+    ```
+3. Acceder a la ubicacion del proyecto:
+     ```go
+    make
+    ```
+4. Ejecutar el archivo '.elf' generado:
+     ```bash
+    ./build/bin/app.elf
+    ```
 
 
+## Modo de uso
 
-### Alumno: Arnedo, Emiliano
+Se utiliza compilacion condicional para la creacion de objetos de forma dinamica o estatica. En el #define ubicado en el modulo 'alumno.c' cambiar a cualquier otro valor para generar los objetos de forma estática.
+```c
+#define CREACION_OBJETOS dinamica
+```
 
 
-* [link al repositorio en github](https://github.com/arnedoemiliano/SE_TPN2)
+## Licencia
 
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## Créditos
+
+Este proyecto forma parte del trabajo práctico N°3 de la asignatura Laboratorio de Microprocesadores de la [Facultad de Ciencias Exactas y Tecnología](https://www.facet.unt.edu.ar/) de la Universidad Nacional de Tucumán.
 
 

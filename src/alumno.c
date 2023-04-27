@@ -38,7 +38,7 @@ SPDX-License-Identifier: MIT
  * @brief Macro que permite cambiar entre creacion de objetos dinamica y estatica.
  * '1' para creacion de objetos dinamica y cualquier otro valor para estatica.
  */
-#define CREACION_OBJ 0 // '0' para creacion estatica.
+#define CREACION_OBJ 1 // '1' para creacion dinamica, '0' para estatica.
 /**
  * @def macro MAX_OBJ
  * @brief Macro con el valor de la maxima cantidad de objetos que se pueden crear de forma estatica

@@ -14,21 +14,24 @@ Usar el programa [make](https://www.gnu.org/software/make/) para compilar y gene
      ```bash
     cd SE_TPN3
     ```
-3. Acceder a la ubicacion del proyecto:
+3. Compilar el proyecto:
      ```go
-    make
+    make all
     ```
 4. Ejecutar el archivo '.elf' generado:
      ```bash
     ./build/bin/app.elf
     ```
-
+5. Generar la documentación (se debe haber compilado el proyecto primero):
+    ```go
+        make doc
+    ```
 
 ## Modo de uso
 
-Se utiliza compilacion condicional para la creacion de objetos de forma dinamica o estatica. En el #define ubicado en el modulo 'alumno.c' cambiar a cualquier otro valor para generar los objetos de forma estática.
+Se utiliza compilacion condicional para la creacion de objetos de forma dinamica o estatica. En el #define ubicado en el modulo 'alumno.c': '1' para creacion dinamica o '0' para creacion estatica.
 ```c
-#define CREACION_OBJETOS dinamica
+#define CREACION_OBJETOS 1 //Para creacion dinamica
 ```
 
 

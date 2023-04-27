@@ -47,7 +47,7 @@ THE SOFTWARE. SPDX-License-Identifier: MIT
 int main(void) {
 
     char cadena_final[128];
-    alumno_t puntero_alumno = CrearAlumno("Emiliano", "Arnedo", 38745528);
+    alumno_t puntero_alumno = CrearAlumno("Arnedo", "Emiliano", 38745528);
     if (puntero_alumno != NULL) {
 
         if (Serializar(puntero_alumno, cadena_final, sizeof(cadena_final)) >= 0) {

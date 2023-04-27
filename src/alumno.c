@@ -30,11 +30,29 @@ SPDX-License-Identifier: MIT
 #include "stdlib.h"
 #include "string.h"
 /* === Macros definitions ====================================================================== */
-#define FIELD_SIZE       30
-#define CREACION_OBJETOS dinamica // "dinamica" o cualquier otra cosa para creacion estatica
-#define MAX_OBJ          50
+
+#define FIELD_SIZE 30
+
+/**
+ * @def macro CREACION_OBJ
+ * @brief Macro que permite cambiar entre creacion de objetos dinamica y estatica.
+ * '1' para creacion de objetos dinamica y cualquier otro valor para estatica.
+ */
+#define CREACION_OBJ 0 // '0' para creacion estatica.
+/**
+ * @def macro MAX_OBJ
+ * @brief Macro con el valor de la maxima cantidad de objetos que se pueden crear de forma estatica
+ *
+ */
+#define MAX_OBJ 50
 
 /* === Private data type declarations ========================================================== */
+/**
+ * @struct Estructura alumno_s
+ * @brief Estructura con los parametros de un alumno
+ * Contiene un campo del tipo bool 'ocupado' que permite definir en la memoria si ese alumno ya fue
+ * creado cuando se los crea de forma estatica.
+ */
 struct alumno_s {
     char apellido[FIELD_SIZE];
     char nombre[FIELD_SIZE];
@@ -112,7 +130,8 @@ int Serializar(alumno_t alumno, char * cadena_final, int bytes_disp) {
 alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
     // En compilacion el compilador decide cual bloque de codigo se ejecuta
     alumno_t resultado; // Puntero a la nueva estructura que devuelvo
-#if CREACION_OBJETOS == dinamica
+
+#if CREACION_OBJ
 
     // malloc devuelve NULL en caso de error
     resultado = malloc(sizeof(struct alumno_s));
@@ -120,6 +139,8 @@ alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
         strcpy(resultado->apellido, apellido);
         strcpy(resultado->nombre, nombre);
         resultado->documento = documento;
+        printf("DINAMICA:\n"); // Solo verificacion
+        return resultado;
     } else {
         return NULL;
     }
@@ -139,7 +160,7 @@ alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
         i++;
         if (i > MAX_OBJ) {
             return NULL; // Creo que el compilador va a lanzar primero el error cuando i>MAX_OBJ
-                         // Porque estaría accediendo a un lugar prohibido de memoria.
+                        // Porque estaría accediendo a un lugar prohibido de memoria.
         }
     }
     */
@@ -151,18 +172,17 @@ alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento) {
             strcpy(instancias[i].nombre, nombre);
             instancias[i].documento = documento;
             instancias[i].ocupado = true;
+            printf("ESTATICA:\n"); // Solo verificacion
             return resultado;
         }
     }
-    return NULL // Todos los espacios estaban ocupados
+    return NULL; // Todos los espacios estaban ocupados
 
     // Creo que se usa "." en vez de "->" porque la estructura a la que accedo la tengo definida en
     // la propia funcion (en un arreglo de estructuras). En el caso anterior, no tenia acceso a la
     // estructura, solamente al puntero de la estructura. Preguntar.
 
 #endif
-
-    return resultado;
 }
 
 int GetCompleto(alumno_t alumno, char * cadena, int espacio) {

@@ -37,17 +37,37 @@ extern "C" {
 #include <stdint.h>
 
 /* === Public data type declarations =========================================================== */
+/**
+ * @brief puntero a la estructura del tipo 'alumno_s'
+ *
+ */
 typedef struct alumno_s * alumno_t; // alumno_t es un tipo de variable puntero a alumno_s
 
 /* === Public variable declarations ============================================================ */
 
 /* === Public function declarations ============================================================ */
+/**
+ * @brief Funcion para crear objetos del tipo alumno
+ *
+ * @param apellido
+ * @param nombre
+ * @param documento
+ * @return alumno_t
+ */
 alumno_t CrearAlumno(char * apellido, char * nombre, uint32_t documento); // Devuelve un puntero
 
 int GetCompleto(alumno_t alumno, char * cadena, int espacio);
 
 uint32_t GetDocumento(alumno_t alumno);
 
+/**
+ * @brief Funcion para serializar los datos de un alumno
+ *
+ * @param alumno_s Estructura constante con los datos del alumno
+ * @param cadena_final Cadena donde se almacena el resultado
+ * @param bytes_disp Cantidad de bytes disponibles
+ * @return int
+ */
 int Serializar(alumno_t alumno, char * cadena, int espacio);
 /* === End of documentation ==================================================================== */
 

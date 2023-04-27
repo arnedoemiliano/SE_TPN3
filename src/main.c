@@ -17,10 +17,10 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. SPDX-License-Identifier: MIT
 *************************************************************************************************/
 
-/** \brief Segundo trabajo práctico
+/** \brief Tercer trabajo práctico
  **
- ** \addtogroup tp2 TPN2
- ** \brief Segundo trabajo práctico
+ ** \addtogroup tp3 TPN3
+ ** \brief Tercer trabajo practico
  ** @{ */
 
 /* === Headers files inclusions
